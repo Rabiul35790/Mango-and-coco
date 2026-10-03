@@ -103,4 +103,23 @@ class AccountTest extends TestCase
         $this->actingAs($user)->post('/logout')->assertRedirect('/');
         $this->assertGuest();
     }
+
+    public function test_only_admins_open_filament_panel(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin', 'email' => 'admin@example.com',
+            'password' => bcrypt('password123'), 'is_admin' => true,
+        ]);
+        $customer = User::create([
+            'name' => 'Customer', 'email' => 'customer@example.com',
+            'password' => bcrypt('password123'), 'is_admin' => false,
+        ]);
+
+        // Guests are sent to the panel login.
+        $this->get('/admin')->assertRedirect('/admin/login');
+        // Customers are forbidden everywhere in the panel.
+        $this->actingAs($customer)->get('/admin')->assertForbidden();
+        // Admins get in.
+        $this->actingAs($admin)->get('/admin')->assertOk();
+    }
 }

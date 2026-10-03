@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@mango-coco.test',
             'password' => bcrypt('password'),
+            'is_admin' => true,
         ]);
     }
 }

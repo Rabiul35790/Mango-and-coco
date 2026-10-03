@@ -16,6 +16,8 @@ npm install && npm run build
 php artisan migrate --force
 php artisan storage:link
 php artisan make:filament-user   # admin login for /admin
+# …then promote that user (only is_admin users pass the panel gate):
+php artisan tinker --execute='App\Models\User::where("email","YOU@domain.com")->update(["is_admin" => true]);'
 ```
 
 ## 3) Keys to fill (nothing works without its key — each fails gracefully, see table)
