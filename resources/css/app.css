@@ -1,0 +1,152 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.jsx';
+
+/*
+ * Mango&Coco design system — "Budgie Garden".
+ *
+ * Cool botanical palette drawn from the birds themselves (wild budgies are
+ * green): deep evergreen ink, jade primary, eucalyptus paper, sky wash.
+ * No warm yellows/oranges anywhere in the UI.
+ * Never hardcode colours in components — use these tokens.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 14px);
+  --radius-3xl: calc(var(--radius) + 24px);
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Nunito", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-leaf: var(--leaf);
+  --color-leaf-foreground: var(--leaf-foreground);
+  --color-blush: var(--blush);
+  --color-blush-foreground: var(--blush-foreground);
+  --color-cream: var(--cream);
+  --color-sky: var(--sky);
+  --color-ink: var(--ink);
+
+  --shadow-soft: var(--shadow-soft);
+  --shadow-lift: var(--shadow-lift);
+}
+
+:root {
+  --radius: 1rem;
+  --cream: oklch(0.975 0.012 170);
+  --ink: oklch(0.25 0.035 165);
+  --background: oklch(0.984 0.008 170);
+  --foreground: oklch(0.25 0.035 165);
+  --card: oklch(1 0.003 170);
+  --card-foreground: oklch(0.25 0.035 165);
+  --popover: oklch(1 0.003 170);
+  --popover-foreground: oklch(0.25 0.035 165);
+  --primary: oklch(0.58 0.12 165);
+  --primary-foreground: oklch(0.985 0.008 170);
+  --secondary: oklch(0.93 0.03 170);
+  --secondary-foreground: oklch(0.32 0.05 165);
+  --muted: oklch(0.95 0.02 170);
+  --muted-foreground: oklch(0.47 0.04 165);
+  --accent: oklch(0.9 0.05 230);
+  --accent-foreground: oklch(0.32 0.06 230);
+  --leaf: oklch(0.58 0.12 165);
+  --leaf-foreground: oklch(0.985 0.008 170);
+  --blush: oklch(0.9 0.045 200);
+  --blush-foreground: oklch(0.33 0.05 200);
+  --sky: oklch(0.86 0.06 230);
+  --destructive: oklch(0.6 0.19 27);
+  --destructive-foreground: oklch(0.99 0.005 95);
+  --border: oklch(0.89 0.025 170);
+  --input: oklch(0.89 0.025 170);
+  --ring: oklch(0.58 0.12 165);
+  --gradient-sun: linear-gradient(135deg, color-mix(in oklab, var(--primary) 30%, white), color-mix(in oklab, var(--sky) 55%, white));
+  --gradient-cream: linear-gradient(180deg, var(--cream), color-mix(in oklab, var(--primary) 10%, var(--cream)));
+  --shadow-soft: 0 8px 24px -20px color-mix(in oklab, var(--ink) 28%, transparent);
+  --shadow-lift: 0 18px 36px -24px color-mix(in oklab, var(--ink) 32%, transparent);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 600; letter-spacing: 0; }
+  :focus-visible { outline: 2px solid var(--color-ring); outline-offset: 2px; }
+
+  /* Subtle global hover language: primary pills gently deepen, nothing jumps. */
+  a.bg-primary, button.bg-primary { transition: filter 160ms ease; }
+  a.bg-primary:hover, button.bg-primary:hover { filter: brightness(0.96); }
+  a.bg-primary:active, button.bg-primary:active { filter: brightness(0.93); }
+}
+
+@utility surface-sun { background-image: var(--gradient-sun); }
+@utility surface-cream { background-image: var(--gradient-cream); }
+
+@utility card-cosy {
+  background-color: var(--color-card);
+  border-radius: var(--radius-2xl);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 240ms ease, border-color 240ms ease;
+  &:hover {
+    border-color: color-mix(in oklab, var(--color-border), var(--ink) 14%);
+    box-shadow: var(--shadow-lift);
+  }
+}
+
+/* Slow, barely-there image zoom for card covers. */
+@utility img-cosy {
+  transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.group:hover .img-cosy { transform: scale(1.03); }
+
+/* Slow Ken Burns drift for hero poster placeholders (stops if no motion preferred). */
+@keyframes kenburns {
+  from { transform: scale(1); }
+  to { transform: scale(1.08); }
+}
+@utility kenburns {
+  animation: kenburns 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .kenburns { animation: none; }
+}
+
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
