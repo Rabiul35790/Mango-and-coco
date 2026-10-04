@@ -2,10 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Mail\BriefDeliveredMail;
+use App\Mail\BriefReceivedMail;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class ShopTest extends TestCase
@@ -123,6 +126,26 @@ class ShopTest extends TestCase
         );
         $this->assertNotNull($route);
         $this->assertStringContainsString('WebhookController', $route->getActionName());
+    }
+
+    public function test_brief_lifecycle_sends_both_emails(): void
+    {
+        Mail::fake();
+
+        $this->postJson('/video-orders', [
+            'productSlug' => 'personalised-video',
+            'formatLabel' => 'Personalised Video',
+            'customerName' => 'Ava',
+            'customerEmail' => 'ava@example.com',
+            'deliverTo' => 'self',
+            'message' => 'Happy birthday!',
+        ])->assertOk();
+
+        // Rendering runs even under fake — catches reserved-var collisions.
+        Mail::assertSent(BriefReceivedMail::class);
+
+        \App\Models\VideoOrder::first()->update(['status' => 'delivered']);
+        Mail::assertSent(BriefDeliveredMail::class);
     }
 
     public function test_download_is_gated_by_paid_order(): void

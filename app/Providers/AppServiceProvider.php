@@ -7,7 +7,9 @@ use App\Listeners\RecordShopOrder;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Setting;
+use App\Models\VideoOrder;
 use App\Observers\ProductObserver;
+use App\Observers\VideoOrderObserver;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -32,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         Model::automaticallyEagerLoadRelationships();
 
         Product::observe(ProductObserver::class);
+        VideoOrder::observe(VideoOrderObserver::class);
 
         // Lemon Squeezy → shop orders mirror for the customer panel.
         Event::listen(

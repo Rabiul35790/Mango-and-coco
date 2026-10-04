@@ -98,6 +98,7 @@ class TrackController extends Controller
             'etaPast' => $v->estimated_delivery_at?->isPast(),
             'downloadUrl' => null,
             'message' => $v->message,
+            'deliveryUrl' => $status === 'delivered' ? $v->delivery_url : null,
             'payUrl' => $status === 'new' ? $v->checkout_url : null,
         ];
     }

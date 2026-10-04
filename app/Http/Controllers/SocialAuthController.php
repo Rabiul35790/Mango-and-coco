@@ -56,6 +56,8 @@ class SocialAuthController extends Controller
         $user = User::where('google_id', $google->getId())->first()
             ?? User::where('email', $google->getEmail())->first();
 
+        $isNew = $user === null;
+
         if ($user) {
             $user->forceFill([
                 'google_id' => $google->getId(),
@@ -78,6 +80,16 @@ class SocialAuthController extends Controller
         // Same guest-history linking as email login/register.
         Order::where('customer_email', $user->email)->whereNull('user_id')->update(['user_id' => $user->id]);
         VideoOrder::where('customer_email', $user->email)->whereNull('user_id')->update(['user_id' => $user->id]);
+
+        if ($isNew) {
+            try {
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(
+                    new \App\Mail\WelcomeMail($user->name, url('/account'), url('/shop/stickers'))
+                );
+            } catch (\Throwable $e) {
+                report($e);
+            }
+        }
 
         return redirect()->intended('/account');
     }

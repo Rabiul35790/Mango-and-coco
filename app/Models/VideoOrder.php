@@ -13,7 +13,7 @@ class VideoOrder extends Model
         'product_id', 'product_slug', 'format_label',
         'customer_name', 'customer_email',
         'recipient_name', 'recipient_email', 'occasion', 'message', 'notes',
-        'deliver_to', 'checkout_url', 'lemon_order_id', 'status',
+        'deliver_to', 'checkout_url', 'delivery_url', 'lemon_order_id', 'status',
     ];
 
     protected static function booted(): void

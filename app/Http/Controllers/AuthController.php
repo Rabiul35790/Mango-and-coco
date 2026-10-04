@@ -70,6 +70,14 @@ class AuthController extends Controller
         \App\Models\Order::where('customer_email', $user->email)->whereNull('user_id')->update(['user_id' => $user->id]);
         \App\Models\VideoOrder::where('customer_email', $user->email)->whereNull('user_id')->update(['user_id' => $user->id]);
 
+        try {
+            \Illuminate\Support\Facades\Mail::to($user->email)->send(
+                new \App\Mail\WelcomeMail($user->name, url('/account'), url('/shop/stickers'))
+            );
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
         return redirect('/account');
     }
 

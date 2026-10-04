@@ -80,6 +80,11 @@ export default function Track({ meta, flash, code, email, result, lookupError })
                   Complete payment
                 </a>
               )}
+              {result.deliveryUrl && (
+                <a href={result.deliveryUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-display font-bold text-primary-foreground">
+                  <Download className="size-4" /> Get your video
+                </a>
+              )}
               <Link href="/contact" className="inline-flex items-center rounded-full border border-border px-6 py-3 font-display font-bold transition-colors hover:bg-muted">
                 Need help?
               </Link>

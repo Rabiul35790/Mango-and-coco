@@ -26,6 +26,9 @@ class VideoOrderForm
                     ])->default('new')->required(),
                     DateTimePicker::make('estimated_delivery_at')->label('Estimated delivery'),
                     TextInput::make('lemon_order_id')->label('Lemon order ID')->disabled()->dehydrated(false),
+                    TextInput::make('delivery_url')->label('Finished file link (Drive / Dropbox / CDN)')
+                        ->url()->maxLength(500)->columnSpanFull()
+                        ->helperText('Pasted into the “delivered” email and shown as the download button on the tracking page.'),
                 ])->columns(2),
             Section::make('Brief')->schema([
                 TextInput::make('format_label')->label('Product / template'),

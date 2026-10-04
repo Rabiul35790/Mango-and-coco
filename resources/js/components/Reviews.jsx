@@ -24,7 +24,7 @@ export function ReviewsSection({ product, reviews, canReview, myReview }) {
   const inputCls = 'w-full rounded-xl border border-input bg-card px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring';
 
   return (
-    <section className="mx-auto w-full max-w-6xl px-4 pb-4 sm:px-6">
+    <section id="reviews" className="mx-auto w-full max-w-6xl scroll-mt-24 px-4 pb-4 sm:px-6">
       <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="font-display text-xl font-bold">
